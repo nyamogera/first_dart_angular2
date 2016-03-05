@@ -7,9 +7,10 @@ import 'dart:html';
     selector: 'my-app',
     template:
     '<div id="my_dock_manager" class="my-dock-manager">'
-        '<div id="solution_window" caption="Solution Explorer"><div style="background-color:black">コンテンツ1</div></div>'
-        '<div id="output_window" caption="Background"><div style="background-color:red">コンテンツ2</div></div>'
-    '</div>'
+        '<div id="editor_window" caption="Editor"><div style="background-color:yellow">エディター</div></div>'
+        '<div id="viewer_window" caption="Viewer"><div style="background-color:blue">ビューワー</div></div>'
+        '<div id="console_window" caption="console"><div style="background-color:red">コンソール</div></div>'
+        '</div>'
 )
 class AppComponent implements AfterViewInit {
 
@@ -27,27 +28,26 @@ class AppComponent implements AfterViewInit {
     window.onResize.listen(onResized);
     onResized(null);
 
-    PanelContainer solution = new PanelContainer(
-        querySelector("#solution_window"), dockManager);
-    PanelContainer output = new PanelContainer(
-        querySelector("#output_window"), dockManager);
+    PanelContainer editor = new PanelContainer(
+        querySelector("#editor_window"), dockManager);
+    PanelContainer viwer = new PanelContainer(
+        querySelector("#viewer_window"), dockManager);
+    PanelContainer console = new PanelContainer(
+        querySelector("#console_window"), dockManager);
 
     DockNode documentNode = dockManager.context.model.documentManagerNode;
 
-    DockNode solutionNode = dockManager.dockUp(documentNode, solution, 0.5);
-    solutionNode.
-    DockNode outputNode = dockManager.dockDown(documentNode, output, 0.5);
+    DockNode consoleNode = dockManager.dockDown(documentNode, console, 0.2);
+    DockNode viwerNode = dockManager.dockRight(documentNode, viwer, 0.5);
+    DockNode editorNode = dockManager.dockFill(documentNode, editor);
   }
 
   void onResized(Event event) {
-    //int headerHeight = header.client.height;
     dockManager.resize(window.innerWidth, window.innerHeight);
-//    dockManager.resize(600, 400);
   }
 }
 
 main() {
   bootstrap(AppComponent);
-  print("hoge!!");
 }
 
