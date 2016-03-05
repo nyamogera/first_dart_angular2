@@ -2,6 +2,7 @@ import 'package:angular2/angular2.dart';
 import 'package:angular2/bootstrap.dart';
 import 'dock_spawn/dock_spawn.dart';
 import 'dart:html';
+import 'dart:js';
 import "lib/ace.dart";
 
 @Component(
@@ -16,7 +17,7 @@ import "lib/ace.dart";
 class AppComponent implements AfterViewInit {
 
   DockManager dockManager;
-
+  AceEditor aceEditor;
 
   AppComponent() {
     print("constractor!!");
@@ -43,8 +44,14 @@ class AppComponent implements AfterViewInit {
     DockNode viwerNode = dockManager.dockRight(documentNode, viwer, 0.5);
     DockNode editorNode = dockManager.dockFill(documentNode, editor);
 
-    ace.edit("editor");
-    print("callEditor");
+    aceEditor = ace.edit("editor");
+    aceEditor.on('change',() { onInput();} );
+
+  }
+
+  void onInput() {
+    print("onInput!");
+    aceEditor.getValue();
   }
 
   void onResized(Event event) {
