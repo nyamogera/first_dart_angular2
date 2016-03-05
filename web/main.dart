@@ -1,37 +1,53 @@
 import 'package:angular2/angular2.dart';
 import 'package:angular2/bootstrap.dart';
 import 'dock_spawn/dock_spawn.dart';
+import 'dart:html';
 
 @Component(
     selector: 'my-app',
-    template: '<h1>My First Angular 2 App</h1>'
+    template:
     '<div id="my_dock_manager" class="my-dock-manager">'
-        '<div id="solution_window" style="background-color:black"></div>'
-        '<div id="output_window" style="background-color:red"></div>'
+        '<div id="solution_window" caption="Solution Explorer"><div style="background-color:black">コンテンツ1</div></div>'
+        '<div id="output_window" caption="Background"><div style="background-color:red">コンテンツ2</div></div>'
     '</div>'
 )
-class AppComponent {
+class AppComponent implements AfterViewInit {
 
   DockManager dockManager;
-  ngOnAfterViewInit() {
-    dockManager = new DockManager(document.query("#my_dock_manager"));
+
+  AppComponent() {
+    print("constractor!!");
+  }
+
+  void ngAfterViewInit() {
+    print("ngOnAfterViewInit!!");
+    dockManager = new DockManager(querySelector("#my_dock_manager"));
     dockManager.initialize();
 
-    //window.on.resize.add(onResized);
-    //onResized(null);
+    window.onResize.listen(onResized);
+    onResized(null);
 
-    PanelContainer solution = new PanelContainer(document.query("#solution_window"), dockManager);
-    PanelContainer output = new PanelContainer(document.query("#output_window"), dockManager);
+    PanelContainer solution = new PanelContainer(
+        querySelector("#solution_window"), dockManager);
+    PanelContainer output = new PanelContainer(
+        querySelector("#output_window"), dockManager);
 
     DockNode documentNode = dockManager.context.model.documentManagerNode;
 
-    DockNode solutionNode = dockManager.dockLeft(documentNode, solution, 0.20);
-    DockNode outputNode = dockManager.dockRight(documentNode, output, 0.4);
+    DockNode solutionNode = dockManager.dockUp(documentNode, solution, 0.5);
+    solutionNode.
+    DockNode outputNode = dockManager.dockDown(documentNode, output, 0.5);
   }
 
+  void onResized(Event event) {
+    //int headerHeight = header.client.height;
+    dockManager.resize(window.innerWidth, window.innerHeight);
+//    dockManager.resize(600, 400);
+  }
 }
 
 main() {
   bootstrap(AppComponent);
+  print("hoge!!");
 }
 
