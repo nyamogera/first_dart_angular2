@@ -41,7 +41,7 @@ class PanelContainer implements IDockContainer {
   
   PanelContainer.loadFromState(var state, this.dockManager) {
     String elementName = state["element"];
-    this.elementContent = query("#$elementName");
+    this.elementContent = querySelector("#$elementName");
     _initialize();
     loadState(state);
   }

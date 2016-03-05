@@ -11,7 +11,7 @@ class Dialog {
   StreamSubscription<MouseEvent> mouseDownHandler;
   
   Dialog.fromElement(String id, this.dockManager) {
-    this.panel = new PanelContainer(query(id), dockManager);
+    this.panel = new PanelContainer(querySelector(id), dockManager);
     this.eventListener = dockManager;
     _initialize();  
   }
